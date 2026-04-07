@@ -106,3 +106,19 @@ function share(text) {
 }
 
 window.onload = fetchPosts;
+
+// بستن پنل‌ها با کلیک روی فضای خالی صفحه
+window.addEventListener('click', function(e) {
+    const catPanel = document.getElementById('category-panel');
+    const colorPanel = document.getElementById('color-panel');
+    const navCats = document.getElementById('nav-cats');
+    const navColors = document.getElementById('nav-colors');
+
+    // اگر پنل باز بود و کلیک روی خودِ پنل یا دکمه منو نبود، پنل را ببند
+    if (catPanel.classList.contains('show') && !catPanel.contains(e.target) && !navCats.contains(e.target)) {
+        catPanel.classList.remove('show');
+    }
+    if (colorPanel.classList.contains('show') && !colorPanel.contains(e.target) && !navColors.contains(e.target)) {
+        colorPanel.classList.remove('show');
+    }
+});
