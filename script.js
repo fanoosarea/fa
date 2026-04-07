@@ -101,41 +101,45 @@ function share(text) {
         }).catch(console.error);
     } else {
         navigator.clipboard.writeText(shareMessage).then(() => {
-            showToast("لینک و متن کپی شد!");
+            showToast("متن و لینک‌ها کپی شد!");
         });
     }
 }
 
-// تابع کمکی برای نمایش پیام کپی
+/* تابع بهینه شده برای نمایش پیام کپی (Toast) */
 function showToast(message) {
-    // ایجاد المان پیام
+    const oldToast = document.querySelector('.toast-msg');
+    if (oldToast) oldToast.remove();
+
     const toast = document.createElement('div');
-    toast.className = 'fixed bottom-32 left-50 -translate-x-1/2 bg-black/80 text-white px-6 py-3 rounded-full text-sm font-bold z-[5000] backdrop-blur-md animate-bounce';
-    toast.style.left = "50%";
-    toast.style.transform = "translateX(-50%)";
+    toast.className = 'toast-msg';
     toast.innerText = message;
-    
     document.body.appendChild(toast);
 
-    // حذف پیام بعد از ۲ ثانیه
+    // تاخیر کوتاه برای اجرای انیمیشن ورود CSS
+    setTimeout(() => toast.classList.add('show'), 50);
+
+    // حذف بعد از ۲.۵ ثانیه
     setTimeout(() => {
-        toast.remove();
-    }, 2000);
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+    }, 2500);
 }
 
-// بستن پنل‌ها با کلیک روی فضای خالی صفحه
+/* بستن پنل‌ها با کلیک روی فضای خالی صفحه */
 window.addEventListener('click', function(e) {
     const catPanel = document.getElementById('category-panel');
     const colorPanel = document.getElementById('color-panel');
     const navCats = document.getElementById('nav-cats');
     const navColors = document.getElementById('nav-colors');
 
-    // اگر پنل باز بود و کلیک روی خودِ پنل یا دکمه منو نبود، پنل را ببند
     if (catPanel.classList.contains('show') && !catPanel.contains(e.target) && !navCats.contains(e.target)) {
         catPanel.classList.remove('show');
+        navCats.classList.remove('active');
     }
     if (colorPanel.classList.contains('show') && !colorPanel.contains(e.target) && !navColors.contains(e.target)) {
         colorPanel.classList.remove('show');
+        navColors.classList.remove('active');
     }
 });
 
