@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>فانوس | بیداری در پرتو کلمات</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --main-bg: #f0f9ff;
+            --main-accent: #38bdf8;
+            --main-text: #0c4a6e;
+        }
+
+        body {
+            transition: background-color 0.8s ease, color 0.5s ease;
+            background-color: var(--main-bg);
+            color: var(--main-text);
+            font-family: 'Vazirmatn', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body.dark {
+            --main-bg: #020617 !important;
+            color: #f8fafc !important;
+        }
+
+        /* کارت شیشه‌ای */
+        .glass-card {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.4s ease;
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* منوی پایین */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            z-index: 2000;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .bottom-nav {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            color: inherit;
+            opacity: 0.6;
+        }
+
+        .nav-item:hover, .nav-item.active { opacity: 1; color: var(--main-accent); }
+
+        /* پنل رنگ‌ها (مخفی به صورت پیش‌فرض) */
+        #color-panel {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 20px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        #color-panel.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+
+        .dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .dot.active { border-color: #000; }
+
+        .tag {
+            background: var(--main-accent);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body class="pb-32">
+
+    <header class="max-w-xl mx-auto px-6 pt-16 mb-12 text-right">
+        <h1 class="font-rubik text-6xl font-black mb-2 tracking-tighter">فانوس.</h1>
+        <p class="text-xl opacity-70 font-medium">نوری در هیاهوی کلمات؛ کوتاه، عمیق، بیدارکننده.</p>
+        <div class="h-1 w-12 bg-[var(--main-accent)] mt-4 rounded-full transition-all duration-500"></div>
+    </header>
+
+    <main id="content-area" class="max-w-xl mx-auto px-6 space-y-8">
+        </main>
+
+    <div id="color-panel">
+        <div class="dot" style="background: #38bdf8;" onclick="setTheme('#f0f9ff', '#38bdf8', '#0c4a6e', this)"></div>
+        <div class="dot" style="background: #fb7185;" onclick="setTheme('#fff1f2', '#fb7185', '#881337', this)"></div>
+        <div class="dot" style="background: #10b981;" onclick="setTheme('#f0fdf4', '#10b981', '#064e3b', this)"></div>
+        <div class="dot" style="background: #a1a1aa;" onclick="setTheme('#fafafa', '#71717a', '#18181b', this)"></div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showHome()">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span>خانه</span>
+        </div>
+        <div class="nav-item" onclick="toggleColorPanel()">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+            <span>رنگ</span>
+        </div>
+        <div class="nav-item" onclick="toggleDark()">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+            <span>تم</span>
+        </div>
+        <div class="nav-item" onclick="showAbout()">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>درباره</span>
+        </div>
+    </nav>
+
+    <script>
+        const posts = [
+            { tag: "بندگی", content: "عظمت انسان در پیشانی‌ای است که فقط برای خالق بر خاک می‌افتد." },
+            { tag: "تزکیه", content: "قلب، ظرف است؛ مواظب باش آن را با چه چیزی پر می‌کنی." },
+            { tag: "سنت", content: "سنت نبوی ﷺ راهی است که در آن بن‌بستی وجود ندارد." },
+            { tag: "ایمان", content: "ایمان یعنی در تاریکی مطلق، به خورشیدی که نمی‌بینی اعتماد کنی." },
+            { tag: "اخلاق", content: "کلماتت را بالا ببر، نه صدایت را؛ باران است که گل‌ها را می‌رویاند." },
+            { tag: "توبه", content: "هر صبح فرصتی است برای بازگشت. رحمت او بزرگتر از گناه ماست." },
+            { tag: "صبر", content: "صبر یعنی تحمل سختی در حالی که چشمت به پاداشِ نادیده است." },
+            { tag: "توکل", content: "کسی که خدا را دارد، چه کم دارد؟ و کسی که او را ندارد، چه دارد؟" },
+            { tag: "قرآن", content: "قرآن نامه‌ای است از طرف پروردگار؛ آیا امروز نامه‌ات را گشودی؟" },
+            { tag: "دعا", content: "دعا، نردبانی است که از زمین تا عرش خدا کشیده شده است." }
+        ];
+
+        function renderPosts() {
+            const container = document.getElementById('content-area');
+            const date = new Intl.DateTimeFormat('fa-IR', {day:'numeric', month:'long'}).format(new Date());
+            container.innerHTML = posts.map(p => `
+                <article class="glass-card">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="tag">${p.tag}</span>
+                        <span class="font-rubik text-[10px] font-bold opacity-30">${date}</span>
+                    </div>
+                    <p class="text-xl leading-[1.8] font-medium opacity-90 mb-8">${p.content}</p>
+                    <div class="flex justify-end pt-4 border-t border-black/5 dark:border-white/5">
+                        <button onclick="share('${p.content}')" class="opacity-30 hover:opacity-100 transition-all">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                        </button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function showHome() {
+            renderPosts();
+            setActiveNav(0);
+        }
+
+        function showAbout() {
+            document.getElementById('content-area').innerHTML = `
+                <div class="glass-card text-center py-20">
+                    <h2 class="font-rubik text-4xl font-black mb-6">درباره فانوس</h2>
+                    <p class="text-lg leading-loose opacity-80">
+                        فانوس یک پروژه‌ی دلی برای انتشار مفاهیم عمیق اخلاقی و اسلامی در قالبی مدرن و مینیمال است. هدف ما این است که در شلوغیِ دنیای دیجیتال، فضایی برای تفکر و آرامش ایجاد کنیم.
+                    </p>
+                </div>
+            `;
+            setActiveNav(3);
+        }
+
+        function toggleColorPanel() { document.getElementById('color-panel').classList.toggle('show'); }
+
+        function setTheme(bg, accent, text, el) {
+            document.documentElement.style.setProperty('--main-bg', bg);
+            document.documentElement.style.setProperty('--main-accent', accent);
+            document.documentElement.style.setProperty('--main-text', text);
+            toggleColorPanel();
+        }
+
+        function toggleDark() { document.body.classList.toggle('dark'); }
+
+        function setActiveNav(index) {
+            document.querySelectorAll('.nav-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+        }
+
+        function share(text) {
+            if (navigator.share) navigator.share({ title: 'فانوس', text: text });
+            else alert("کپی شد!");
+        }
+
+        window.onload = renderPosts;
+    </script>
+</body>
+</html>
