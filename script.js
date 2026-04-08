@@ -148,7 +148,7 @@ function copyToClipboard(event, text) {
         // ایجاد پیام شناور در محل دقیق کلیک کاربر
         const feedback = document.createElement('div');
         feedback.className = 'copy-feedback';
-        feedback.innerText = 'کپی شد';
+        feedback.innerText = 'لینک و متن کپی شد';
         
         feedback.style.left = `${event.clientX}px`;
         feedback.style.top = `${event.clientY - 30}px`;
