@@ -36,7 +36,7 @@ function renderPosts(dataArray) {
         <article class="glass-card">
             <div class="flex justify-between items-center mb-5">
                 <span class="tag">${p.tag}</span>
-                <span class="date-text text-[10px] opacity-30 font-bold">${p.date || ''}</span>
+                <span class="date-text opacity-30 font-bold">${p.date || ''}</span>
             </div>
             <p class="text-2xl leading-[1.8] font-medium opacity-90 mb-8">${p.content}</p>
             
@@ -115,7 +115,6 @@ function toggleDark() {
     document.getElementById('theme-moon').classList.toggle('hidden', !isDark);
 }
 
-// اصلاح شده برای جلوگیری از اسکرول صفحه زیرین
 function openAbout() { 
     document.getElementById('about-overlay').style.display = 'flex'; 
     document.body.style.overflow = 'hidden'; 
@@ -134,7 +133,7 @@ function setTheme(bg, accent, text) {
 }
 
 function share(text) {
-    const shareMessage = `${text}\n\n✨ فانوس\n---------------------------\nهمراه ما باشید در:\nاینســــتا: instagram.com/fanoosarea\nتلگــــرام: t.me/fanoosarea\nتیک تاک: tiktok.com/@fanoosarea`;
+    const shareMessage = `${text}\n\n✨ فانوس\n---------------------------\nهمراه ما باشید در:\nاینســــتا: instagram.com/fanoosarea\nتلگــــرام: t.me/fanoosarea\nتیک تاک: tiktok.com/@fanoosarea\nســــایت: fa.fanos.workers.dev`;
     if (navigator.share) {
         navigator.share({ text: shareMessage }).catch(() => copyToClipboard(shareMessage));
     } else {
@@ -143,21 +142,7 @@ function share(text) {
 }
 
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => showToast("متن کپی شد!"));
-}
-
-function showToast(message) {
-    const old = document.querySelector('.toast-msg');
-    if (old) old.remove();
-    const toast = document.createElement('div');
-    toast.className = 'toast-msg';
-    toast.innerText = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.classList.add('show'), 50);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 400);
-    }, 2500);
+    navigator.clipboard.writeText(text);
 }
 
 window.addEventListener('click', function(e) {
@@ -171,8 +156,13 @@ window.addEventListener('click', function(e) {
     let clickedNav = false;
     navItems.forEach(n => { if(n.contains(e.target)) clickedNav = true; });
 
-    if (!clickedInsidePanel && !clickedNav && e.target === aboutOverlay) {
-        closeAbout(); // استفاده از تابع استاندارد برای بازگشت اسکرول
+    // اصلاح منطق بستن پنل‌ها با کلیک روی صفحه
+    if (!clickedInsidePanel && !clickedNav) {
+        if (e.target === aboutOverlay || aboutOverlay.contains(e.target)) {
+            closeAbout();
+        } else {
+            closePanels();
+        }
     }
 });
 

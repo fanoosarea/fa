@@ -184,13 +184,14 @@ body.overflow-hidden {
     color: white;
     padding: 5px 15px;
     border-radius: 12px;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: 900;
 }
 
 .date-text {
     font-family: 'Vazirmatn', sans-serif;
     letter-spacing: -0.5px;
+    font-size: 13px; /* این خط را اضافه کن یا به مقدار دلخواه تغییر بده */
 }
 
 /* نقاط انتخاب رنگ */
