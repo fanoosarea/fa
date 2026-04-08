@@ -75,7 +75,6 @@ function handleNav(action) {
     const targetPanel = action === 'categories' ? 'category-panel' : (action === 'colors' ? 'color-panel' : null);
     const isAlreadyOpen = targetPanel ? document.getElementById(targetPanel).classList.contains('show') : false;
 
-    // بستن همه پنل‌ها قبل از هر چیز (حتی برای تم)
     closePanels();
 
     if (action === 'theme') {
@@ -105,7 +104,6 @@ function handleNav(action) {
 function closePanels() {
     document.querySelectorAll('.panel-popup').forEach(p => p.classList.remove('show'));
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    // بازگرداندن حالت فعال به خانه در صورتی که منو بسته شد
     document.getElementById('nav-home').classList.add('active');
     document.body.style.overflow = ''; 
 }
@@ -117,8 +115,16 @@ function toggleDark() {
     document.getElementById('theme-moon').classList.toggle('hidden', !isDark);
 }
 
-function openAbout() { document.getElementById('about-overlay').style.display = 'flex'; }
-function closeAbout() { document.getElementById('about-overlay').style.display = 'none'; }
+// اصلاح شده برای جلوگیری از اسکرول صفحه زیرین
+function openAbout() { 
+    document.getElementById('about-overlay').style.display = 'flex'; 
+    document.body.style.overflow = 'hidden'; 
+}
+
+function closeAbout() { 
+    document.getElementById('about-overlay').style.display = 'none'; 
+    document.body.style.overflow = ''; 
+}
 
 function setTheme(bg, accent, text) {
     document.documentElement.style.setProperty('--main-bg', bg);
@@ -128,7 +134,7 @@ function setTheme(bg, accent, text) {
 }
 
 function share(text) {
-    const shareMessage = `${text}\n\n✨ فانوس\n---------------------------\nهمراه ما باشید در:\nاینستاگرام: instagram.com/fanoosarea\nتلگرام: t.me/fanoosarea`;
+    const shareMessage = `${text}\n\n✨ فانوس\n---------------------------\nهمراه ما باشید در:\nاینســــتا: instagram.com/fanoosarea\nتلگــــرام: t.me/fanoosarea\nتیک تاک: tiktok.com/@fanoosarea`;
     if (navigator.share) {
         navigator.share({ text: shareMessage }).catch(() => copyToClipboard(shareMessage));
     } else {
@@ -165,8 +171,8 @@ window.addEventListener('click', function(e) {
     let clickedNav = false;
     navItems.forEach(n => { if(n.contains(e.target)) clickedNav = true; });
 
-    if (!clickedInsidePanel && !clickedNav && e.target !== aboutOverlay) {
-        closePanels();
+    if (!clickedInsidePanel && !clickedNav && e.target === aboutOverlay) {
+        closeAbout(); // استفاده از تابع استاندارد برای بازگشت اسکرول
     }
 });
 
