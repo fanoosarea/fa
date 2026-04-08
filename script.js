@@ -140,43 +140,37 @@ function setTheme(bg, accent, text) {
     closePanels();
 }
 
-// --- بخش اصلاح شده برای حل مشکل آیفون و لرزش اندروید ---
-function share(event, text) {
+// --- بخش نهایی بدون لرزش ---
+async function share(event, text) {
     const shareMessage = `${text}\n\n✨ فانوس\n---------------------------\nهمراه ما باشید در:\nاینســــتا: instagram.com/fanoosarea\nتلگــــرام: t.me/fanoosarea\nتیک تاک: tiktok.com/@fanoosarea\nســــایت: fa.fanos.workers.dev`;
     
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    if (navigator.share && isIOS) {
-        // در آیفون فقط از منوی سیستم استفاده می‌کنیم (بدون کپی دستی برای جلوگیری از تداخل)
-        navigator.share({ text: shareMessage }).catch(() => {});
-    } else {
-        // در اندروید و پی‌سی ابتدا کپی می‌کنیم و پیام می‌دهیم
-        showFeedback(event);
-        copyToClipboardManual(shareMessage);
-
-        // در اندروید، با کمی تاخیر منو را باز می‌کنیم تا لرزش حذف شود
-        if (navigator.share) {
-            setTimeout(() => {
-                navigator.share({ text: shareMessage }).catch(() => {});
-            }, 300);
+    // ۱. کپی کردن متن بدون استفاده از متد قدیمی و پرشی
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(shareMessage);
+        } else {
+            // متد کپی بسیار سبک برای مرورگرهای قدیمی که باعث پرش نمی‌شود
+            const input = document.createElement('input');
+            input.setAttribute('value', shareMessage);
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
         }
+    } catch (err) {
+        console.error('Copy failed');
     }
-}
 
-function copyToClipboardManual(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(text);
-    } else {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        textArea.style.top = "0";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
+    // ۲. نمایش فیدبک بصری
+    showFeedback(event);
+
+    // ۳. باز کردن منوی اشتراک سیستم برای موبایل با تاخیر هوشمند
+    if (navigator.share && isMobile) {
+        setTimeout(() => {
+            navigator.share({ text: shareMessage }).catch(() => {});
+        }, 100);
     }
 }
 
@@ -185,11 +179,12 @@ function showFeedback(event) {
     feedback.className = 'copy-feedback';
     feedback.innerText = 'لینک و متن کپی شد';
     
+    // شناسایی مختصات دقیق برای جلوگیری از پرش موقعیت
     let x = event.clientX || (event.touches ? event.touches[0].clientX : 0);
     let y = event.clientY || (event.touches ? event.touches[0].clientY : 0);
     
     feedback.style.left = `${x}px`;
-    feedback.style.top = `${y - 35}px`;
+    feedback.style.top = `${y - 40}px`;
     document.body.appendChild(feedback);
     
     setTimeout(() => {
