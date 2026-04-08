@@ -67,7 +67,7 @@ function filterCat(btn, tag) {
     document.getElementById('searchInput').value = '';
     const filtered = tag === 'همه' ? posts : posts.filter(p => p.tag === tag);
     renderPosts(filtered);
-    closePanels(); // حالا این تابع هوشمندانه آیکون درست را روشن نگه می‌دارد
+    closePanels();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -83,7 +83,6 @@ function handleNav(action) {
     if (isAlreadyOpen) {
         closePanels();
     } else {
-        // بستن بقیه پنل‌ها قبل از باز کردن پنل جدید
         document.querySelectorAll('.panel-popup').forEach(p => p.classList.remove('show'));
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
 
@@ -108,11 +107,8 @@ function handleNav(action) {
 function closePanels() {
     document.querySelectorAll('.panel-popup').forEach(p => p.classList.remove('show'));
     document.body.style.overflow = ''; 
-    
-    // پاک کردن وضعیت فعال همه آیکون‌ها
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     
-    // اگر فیلتری فعال است آیکون دسته‌ها روشن بماند، در غیر این صورت خانه
     if (currentFilter !== 'همه') {
         document.getElementById('nav-cats').classList.add('active');
     } else {
@@ -147,29 +143,57 @@ function setTheme(bg, accent, text) {
 function share(event, text) {
     const shareMessage = `${text}\n\n✨ فانوس\n---------------------------\nهمراه ما باشید در:\nاینســــتا: instagram.com/fanoosarea\nتلگــــرام: t.me/fanoosarea\nتیک تاک: tiktok.com/@fanoosarea\nســــایت: fa.fanos.workers.dev`;
     
-    if (navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        navigator.share({ text: shareMessage }).catch(() => copyToClipboard(event, shareMessage));
+    // ۱. نمایش پیام فیدبک در محل کلیک
+    showFeedback(event);
+
+    // ۲. کپی متن در کلیپ‌بورد
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareMessage);
     } else {
-        copyToClipboard(event, shareMessage);
+        const textArea = document.createElement("textarea");
+        textArea.value = shareMessage;
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+    }
+
+    // ۳. باز کردن منوی اشتراک سیستم در صورت امکان
+    if (navigator.share && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        setTimeout(() => {
+            navigator.share({ text: shareMessage }).catch(() => {});
+        }, 150); 
     }
 }
 
-function copyToClipboard(event, text) {
-    navigator.clipboard.writeText(text).then(() => {
-        const feedback = document.createElement('div');
-        feedback.className = 'copy-feedback';
-        feedback.innerText = 'لینک و متن کپی شد';
-        
-        feedback.style.left = `${event.clientX}px`;
-        feedback.style.top = `${event.clientY - 30}px`;
-        
-        document.body.appendChild(feedback);
-        
-        setTimeout(() => {
-            feedback.classList.add('fade-out');
-            setTimeout(() => feedback.remove(), 400);
-        }, 800);
-    });
+function showFeedback(event) {
+    const feedback = document.createElement('div');
+    feedback.className = 'copy-feedback';
+    feedback.innerText = 'لینک و متن کپی شد';
+    
+    // شناسایی مختصات کلیک یا لمس
+    let x, y;
+    if (event.type.startsWith('touch')) {
+        x = event.touches[0].clientX;
+        y = event.touches[0].clientY;
+    } else {
+        x = event.clientX;
+        y = event.clientY;
+    }
+    
+    feedback.style.left = `${x}px`;
+    feedback.style.top = `${y - 35}px`;
+    
+    document.body.appendChild(feedback);
+    
+    setTimeout(() => {
+        feedback.classList.add('fade-out');
+        setTimeout(() => feedback.remove(), 400);
+    }, 800);
 }
 
 window.addEventListener('click', function(e) {
