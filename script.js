@@ -184,7 +184,6 @@ async function share(event, text) {
             await navigator.share({
                 title: "فانوس",
                 text: shareMessage,
-                url: window.location.href
             });
             showFeedback(event);
             return;
