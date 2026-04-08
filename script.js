@@ -166,9 +166,17 @@ function setTheme(bg, accent, text) {
 
 // -------------------- ✅ FIXED SHARE ONLY --------------------
 async function share(event, text) {
-    const shareMessage = `${text}\n\n✨ فانوس`;
+    const shareMessage = `${text}
+    
+ 
+✨ فانوس
+---------------------------
+همراه ما باشید در:
+اینســــتا: instagram.com/fanoosarea
+تلگــــرام: t.me/fanoosarea
+تیک تاک: tiktok.com/@fanoosarea
+ســــایت: fa.fanos.workers.dev`;
 
-    // فقط اندروید و موبایل
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
     if (navigator.share && isMobile) {
