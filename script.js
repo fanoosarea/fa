@@ -206,10 +206,10 @@ async function share(event, text) {
 ✨ فـانـوس
 ---------------------------
 همراه ما باشید در:
+ســـایت: fa.fanos.workers.dev
 اینستـــا: instagram.com/fanoosarea
 تلگـــرام: t.me/fanoosarea
-تیک تاک: tiktok.com/@fanoosarea
-ســـایت: fa.fanos.workers.com`;
+تیک تاک: tiktok.com/@fanoosarea`;
 
     try {
         // متنی که کپی می‌شود
