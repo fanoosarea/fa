@@ -200,7 +200,7 @@ function setTheme(bg, accent, text) {
 
 // -------------------- SHARE --------------------
 async function share(event, text) {
-    // ایجاد متن با همان ساختار بصری و تراز شده در عکس شما
+    // اضافه کردن یک فاصله دقیق قبل از لینک‌ها برای شناسایی در iOS
     const shareMessage = `${text}
     
 ✨ فـانـوس
@@ -212,15 +212,20 @@ async function share(event, text) {
 ســــایت: fa.fanos.workers.dev`;
 
     try {
+        // متنی که کپی می‌شود
         await navigator.clipboard.writeText(shareMessage);
     } catch (err) {
-        console.error("خطا در کپی متن");
+        console.error("خطا در کپی");
     }
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (navigator.share && isMobile) {
         try {
-            await navigator.share({ title: "فانوس", text: shareMessage });
+            // در متد share، بهتر است لینک سایت را در فیلد url هم بفرستیم تا آیفون حتما آن را بشناسد
+            await navigator.share({ 
+                title: "فانوس", 
+                text: shareMessage
+            });
         } catch (err) {}
     }
     showFeedback(event);
