@@ -209,7 +209,7 @@ async function share(event, text) {
 اینستـــا: instagram.com/fanoosarea
 تلگـــرام: t.me/fanoosarea
 تیک تاک: tiktok.com/@fanoosarea
-ســـایت: fa.fanos.workers.dev`;
+ســـایت: https://fa.fanos.workers.dev`;
 
     try {
         // متنی که کپی می‌شود
