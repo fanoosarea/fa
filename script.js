@@ -200,11 +200,22 @@ function setTheme(bg, accent, text) {
 
 // -------------------- SHARE --------------------
 async function share(event, text) {
-    const shareMessage = `${text}\n\n✨ فانوس\n---------------------------\nاینستا: instagram.com/fanoosarea\nتلگرام: t.me/fanoosarea\nسایت: fa.fanos.workers.dev`;
+    // ایجاد متن با همان ساختار بصری و تراز شده در عکس شما
+    const shareMessage = `${text}
+    
+✨ فـانـوس
+---------------------------
+همراه ما باشید در:
+اینستــــا: instagram.com/fanoosarea
+تلگــــرام: t.me/fanoosarea
+تیک تاک: tiktok.com/@fanoosarea
+ســــایت: fa.fanos.workers.dev`;
 
     try {
         await navigator.clipboard.writeText(shareMessage);
-    } catch (err) {}
+    } catch (err) {
+        console.error("خطا در کپی متن");
+    }
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (navigator.share && isMobile) {
