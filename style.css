@@ -387,9 +387,13 @@ html.no-scroll {
     opacity: 0.9;
 }
 
+/* تنظیمات اصلاح شده آیکون‌ها: سایز ۳۲ و انیمیشن چرخشی */
 .social-icon img {
-    transition: all 0.3s ease;
+    width: 42px;
+    height: 42px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     filter: grayscale(1) brightness(0.5);
+    display: block;
 }
 
 .dark .social-icon img {
@@ -398,5 +402,10 @@ html.no-scroll {
 
 .social-icon:hover img {
     filter: none;
-    transform: translateY(-3px);
+    transform: scale(1.3) rotate(8deg);
+    opacity: 1;
+}
+
+.social-icon:active img {
+    transform: scale(0.95);
 }
