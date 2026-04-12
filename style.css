@@ -53,22 +53,39 @@ body.overflow-hidden {
 }
 .social-link:hover { opacity: 1; transform: scale(1.05); }
 
-/* آیکون‌های شبکه اجتماعی در درباره ما */
+/* --- ⚡ بخش اصلاح شده آیکون‌های شبکه اجتماعی (نسخه نهایی) ⚡ --- */
+
 .social-icon {
-    color: #1f2937;
-    transition: all 0.3s ease;
-    opacity: 0.8;
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
 }
 
-.dark .social-icon {
-    color: #f1f5f9;
+.social-icon img {
+    width: 42px;
+    height: 42px;
+    display: block;
+    /* حالت لایت: تبدیل به مشکی */
+    filter: brightness(0);
+    transition: filter 0.3s ease, transform 0.3s ease;
 }
 
-.social-icon:hover, .social-icon:active {
-    color: var(--main-accent) !important;
-    transform: translateY(-5px);
-    opacity: 1;
+/* حالت دارک مود: تبدیل آیکون‌ها به سفید */
+body.dark .social-icon img {
+    filter: brightness(0) invert(1) !important; 
 }
+
+/* حالت هاور: تبدیل به رنگ بنفش اصلی سایت */
+.social-icon:hover img {
+    filter: invert(67%) sepia(34%) saturate(735%) hue-rotate(215deg) brightness(101%) contrast(98%) !important;
+    transform: scale(1.25) rotate(8deg);
+}
+
+.social-icon:active {
+    transform: scale(0.9);
+}
+
+/* --- ⚡ پایان بخش اصلاح شده ⚡ --- */
 
 /* منوی پایین */
 .bottom-nav {
@@ -385,27 +402,4 @@ html.no-scroll {
 .close-about-btn:hover {
     transform: scale(1.05);
     opacity: 0.9;
-}
-
-/* تنظیمات اصلاح شده آیکون‌ها: سایز ۳۲ و انیمیشن چرخشی */
-.social-icon img {
-    width: 42px;
-    height: 42px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    filter: grayscale(1) brightness(0.5);
-    display: block;
-}
-
-.dark .social-icon img {
-    filter: grayscale(1) brightness(1.5);
-}
-
-.social-icon:hover img {
-    filter: none;
-    transform: scale(1.3) rotate(8deg);
-    opacity: 1;
-}
-
-.social-icon:active img {
-    transform: scale(0.95);
 }
