@@ -83,7 +83,7 @@ body.overflow-hidden {
     border-radius: 30px;
     display: flex;
     justify-content: space-around;
-    align-items: center; /* اضافه شده برای تراز شدن دایره جدید */
+    align-items: center; 
     padding: 15px 10px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.1);
     z-index: 2000;
@@ -100,7 +100,7 @@ body.overflow-hidden {
     color: var(--main-text);
     opacity: 0.4;
     transition: 0.3s;
-    flex: 1; /* برای توزیع مساوی فضا */
+    flex: 1; 
 }
 
 .nav-item.active {
@@ -116,16 +116,15 @@ body.overflow-hidden {
 .font-icon-circle {
     width: 32px;
     height: 32px;
-    background: var(--main-accent); /* رنگ انتخابی کاربر */
+    background: var(--main-accent); 
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    overflow: hidden; /* برای جلوگیری از بیرون زدگی عکس */
+    overflow: hidden; 
 }
 
-/* تنظیم استایل عکس داخل دایره */
 .font-icon-circle img {
     display: block;
     transition: 0.3s;
@@ -354,4 +353,50 @@ html.no-scroll {
 /* حذف دکمه شناور قدیمی */
 .font-ctrl-anchor {
     display: none;
+}
+
+/* --- ✅ بخش‌های اضافه شده جدید برای "درباره ما" --- */
+
+.about-text-container {
+    font-size: 17px; 
+    line-height: 1.8;
+    text-align: justify;
+    color: currentColor;
+}
+
+.about-text-container p {
+    margin-bottom: 1rem;
+}
+
+.close-about-btn {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 12px 30px;
+    background: var(--main-accent);
+    color: white;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.close-about-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.social-icon img {
+    transition: all 0.3s ease;
+    filter: grayscale(1) brightness(0.5);
+}
+
+.dark .social-icon img {
+    filter: grayscale(1) brightness(1.5);
+}
+
+.social-icon:hover img {
+    filter: none;
+    transform: translateY(-3px);
 }
