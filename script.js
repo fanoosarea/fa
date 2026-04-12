@@ -273,4 +273,19 @@ window.addEventListener('click', function(e) {
     }
 });
 
+
+// کد نمایش تصادفی جملات
+function showRandomQuote() {
+    if (typeof myQuotes !== 'undefined' && myQuotes.length > 0) {
+        const displayElement = document.getElementById('quote-display');
+        if (displayElement) {
+            const randomIndex = Math.floor(Math.random() * myQuotes.length);
+            displayElement.textContent = myQuotes[randomIndex];
+        }
+    }
+}
+
+// اجرای تابع به محض لود شدن صفحه
+window.addEventListener('DOMContentLoaded', showRandomQuote);
+
 window.onload = fetchPosts;
