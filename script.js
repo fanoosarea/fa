@@ -3,10 +3,10 @@ let posts = [];
 let currentFilter = 'همه';
 let scrollY = 0;
 
-// ✅ ۱. منطق چرخش فونت (هماهنگ با دایره رنگی جدید)
+// ✅ ۱. منطق چرخش فونت (اصلاح شده: بدون پرش صفحه)
 let fontState = 0; 
 function rotateFontSize() {
-    closePanels(); // 👈 این خط اضافه شد تا موقع تغییر سایز، بقیه پنل‌ها بسته شوند
+    // خط closePanels حذف شد تا صفحه به بالا پرش نکند
     
     const sizes = ['16px', '19px', '21px', '24px', '27px'];
     fontState = (fontState + 1) % sizes.length;
@@ -191,13 +191,13 @@ function toggleDark() {
     document.getElementById('theme-moon').classList.toggle('hidden', !isDark);
 }
 
-// ✅ اصلاح شده: تابع setTheme حالا نام تم را هم دریافت کرده و به body اضافه می‌کند
+// ✅ اصلاح شده: ست کردن تم با نام برای فیلتر رنگ آیکون‌ها
 function setTheme(bg, accent, text, themeName) {
     document.documentElement.style.setProperty('--main-bg', bg);
     document.documentElement.style.setProperty('--main-accent', accent);
     document.documentElement.style.setProperty('--main-text', text);
     
-    // اضافه کردن نام تم به بادی برای فعال شدن فیلترهای رنگی در CSS
+    // اضافه کردن نام تم به بادی
     document.body.setAttribute('data-theme', themeName);
     
     closePanels();
@@ -205,7 +205,6 @@ function setTheme(bg, accent, text, themeName) {
 
 // -------------------- SHARE --------------------
 async function share(event, text) {
-    // اضافه کردن یک فاصله دقیق قبل از لینک‌ها برای شناسایی در iOS
     const shareMessage = `${text}
     
 ✨ فـانـوس
@@ -217,7 +216,6 @@ async function share(event, text) {
 ســــایت: https://fa.fanos.workers.dev`;
 
     try {
-        // متنی که کپی می‌شود
         await navigator.clipboard.writeText(shareMessage);
     } catch (err) {
         console.error("خطا در کپی");
@@ -226,7 +224,6 @@ async function share(event, text) {
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     if (navigator.share && isMobile) {
         try {
-            // در متد share، بهتر است لینک سایت را در فیلد url هم بفرستیم تا آیفون حتما آن را بشناسد
             await navigator.share({ 
                 title: "فانوس", 
                 text: shareMessage
@@ -290,11 +287,10 @@ function showRandomQuote() {
     }
 }
 
-// اجرای تابع به محض لود شدن صفحه
 window.addEventListener('DOMContentLoaded', showRandomQuote);
 
+// ✅ اصلاح شده: لود پست‌ها + فعال‌سازی تم پیش‌فرض بنفش در اولین لود
 window.onload = () => {
     fetchPosts();
-    // این خط باعث می‌شود از همان لحظه اول آیکون‌ها بدانند تم بنفش است
     setTheme('#f5f3ff', '#a78bfa', '#4c1d95', 'purple');
 };
