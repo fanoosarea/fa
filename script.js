@@ -1,6 +1,6 @@
 // ⚠️ آدرس و کلید پروژه خودت را اینجا جایگزین کن
-const SUPABASE_URL = "https://gsgwyybugdolwlyaoahl.supabase.co"; 
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzZ3d5eWJ1Z2RvbHdseWFvYWhsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxMDg5NTIsImV4cCI6MjA5MTY4NDk1Mn0.CbSvGNHbLVBOrdY2yIYdiFB4GMQf9B9mh2IkQGp_NFE"; 
+const SUPABASE_URL = "url"; 
+const SUPABASE_KEY = "key"; 
 
 let posts = [];
 let currentFilter = 'همه';
